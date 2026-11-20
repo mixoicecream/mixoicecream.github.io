@@ -741,6 +741,10 @@ a { color: inherit; }
           <input type="date" id="c-fecha" name="fecha">
         </label>
         <label class="campo">
+          <span>¿Dónde es el evento?</span>
+          <input type="text" id="c-lugar" name="lugar" autocomplete="address-level2" placeholder="Localidad">
+        </label>
+        <label class="campo">
           <span>Tipo de evento</span>
           <select id="c-tipo" name="tipo">
             <option value="">Elegí una opción</option>
@@ -777,19 +781,21 @@ a { color: inherit; }
   var wa = document.getElementById('whatsapp');
   var cFecha = document.getElementById('c-fecha');
   var cTipo = document.getElementById('c-tipo');
+  var cLugar = document.getElementById('c-lugar');
   var cInv = document.getElementById('c-invitados');
   var hoy = new Date(); cFecha.min = hoy.toISOString().slice(0, 10);
   var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   function armarMensaje() {
     var m = 'Hola Mixo, quiero consultar por un evento.';
     if (cFecha.value) { var f = cFecha.value.split('-'); m += '\nFecha: ' + parseInt(f[2], 10) + ' de ' + MESES[parseInt(f[1], 10) - 1] + ' de ' + f[0]; }
+    if (cLugar.value.trim()) m += '\nLugar: ' + cLugar.value.trim();
     if (cTipo.value) m += '\nTipo de evento: ' + cTipo.value;
     if (cInv.value) m += '\nInvitados: ' + cInv.value + ' aprox.';
     wa.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(m);
   }
   if (WHATSAPP) {
     armarMensaje(); wa.hidden = false;
-    [cFecha, cTipo, cInv].forEach(function (el) { el.addEventListener('input', armarMensaje); el.addEventListener('change', armarMensaje); });
+    [cFecha, cLugar, cTipo, cInv].forEach(function (el) { el.addEventListener('input', armarMensaje); el.addEventListener('change', armarMensaje); });
     document.getElementById('consulta').addEventListener('submit', function (e) { e.preventDefault(); });
   }
 

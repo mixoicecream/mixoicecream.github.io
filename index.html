@@ -358,6 +358,15 @@ a { color: inherit; }
 .evento { padding: clamp(6rem, 14vw, 10rem) var(--margen) 0; max-width: 78rem; margin: 0 auto; }
 .evento__texto { display: grid; gap: 2.5rem; justify-items: center; text-align: center; max-width: 40rem; margin: 0 auto clamp(3.5rem, 8vw, 6rem); }
 .evento__texto > div { width: 100%; display: grid; justify-items: center; }
+.evento__video { --marco-inset: -10px; position: relative; margin: 2rem auto .5rem; width: min(100%, 22rem); aspect-ratio: 9 / 16; background: #000; }
+.evento__video video { width: 100%; height: 100%; object-fit: cover; }
+.evento__sonido {
+  position: absolute; right: .75rem; bottom: .75rem; z-index: 3;
+  padding: .45rem .9rem; border: 1px solid var(--oro); background: rgba(20,20,20,.7);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  font-family: var(--caps); font-size: .8125rem; letter-spacing: .06em; color: var(--oro); cursor: pointer;
+}
+.evento__sonido:hover { background: var(--oro); color: var(--negro); }
 .evento h2 { font-size: clamp(3.5rem, 14vw, 6rem); margin-bottom: 2rem; }
 .evento p { margin: 0 auto 1.25rem; max-width: 36ch; font-size: 1.125rem; }
 .tipos { list-style: none; margin: 0 auto; padding: 0; width: min(100%, 30rem); border-top: 1px solid var(--linea); }
@@ -383,7 +392,8 @@ a { color: inherit; }
 .mapa figcaption span { display: block; white-space: nowrap; }
 /* cada frase en una sola línea: el tamaño se ajusta al ancho de la pantalla */
 .mapa__zona-texto { font-size: min(1.125rem, calc((100vw - 2.5rem) / 28.8)); }
-.mapa__consulta { font-style: italic; font-size: min(1.125rem, calc((100vw - 2.5rem) / 19.6)); }
+.mapa__consulta { font-style: italic; font-size: 1.3125rem; white-space: normal !important; text-wrap: balance; max-width: 22ch; text-align: center; }
+@media (min-width: 700px) { .mapa__consulta { font-size: 1.375rem; max-width: none; white-space: nowrap !important; } }
 /* la ruta se dibuja al llegar */
 .js .mapa__ruta { clip-path: inset(0 100% 0 0); transition: clip-path 2.2s cubic-bezier(.4,0,.2,1) .3s; }
 .js .mapa--visto .mapa__ruta { clip-path: inset(0 0 0 0); }
@@ -680,6 +690,12 @@ a { color: inherit; }
         <h2 class="script" id="t-evento">En tu evento</h2>
         <p>Mixo llega con su barra, su equipo y los cuatro sabores de la carta.</p>
         <p>Cada copa se prepara en el momento, frente al invitado, y cada una tiene su ritual.</p>
+        <figure class="evento__video marco-mixo">
+          <video id="video-evento" playsinline muted loop preload="metadata" poster="media/evento-poster.jpg" aria-label="Mixo en un evento: la barra, los rituales y los invitados">
+            <source src="media/evento.mp4" type="video/mp4">
+          </video>
+          <button class="evento__sonido" id="sonido-evento" type="button">Activar sonido</button>
+        </figure>
       </div>
       <div>
         <ul class="tipos">
@@ -822,6 +838,20 @@ a { color: inherit; }
   }
 
   if (reduce) { video.removeAttribute('autoplay'); video.pause(); raiz.classList.add('estatico'); return; }
+
+  /* ── Video del evento: se reproduce cuando está en pantalla ── */
+  var vEv = document.getElementById('video-evento');
+  var bEv = document.getElementById('sonido-evento');
+  bEv.addEventListener('click', function () {
+    vEv.muted = !vEv.muted;
+    if (!vEv.muted) { vEv.play().catch(function(){}); }
+    bEv.textContent = vEv.muted ? 'Activar sonido' : 'Silenciar';
+  });
+  if ('IntersectionObserver' in window && !reduce) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.isIntersecting ? vEv.play().catch(function(){}) : vEv.pause(); });
+    }, { threshold: 0.4 }).observe(vEv);
+  } else { vEv.controls = true; }
 
   /* ── Mapa y cartel: se activan al llegar ── */
   if ('IntersectionObserver' in window) {

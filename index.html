@@ -416,20 +416,27 @@ a { color: inherit; }
 
 
 .galeria {
-  display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;
-  height: 255vw; overflow: hidden;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 10%, #000 88%, transparent 100%);
-          mask-image: linear-gradient(180deg, transparent 0%, #000 10%, #000 88%, transparent 100%);
+  /* celular: todas las fotos en dos columnas, sin movimiento */
+  display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: .6rem;
 }
-.galeria__col { display: grid; gap: .75rem; align-content: start; will-change: transform; }
-.galeria__col:nth-child(2) { margin-top: -18%; }
-.galeria__col:nth-child(3) { display: none; }
+.galeria__col { display: contents; }
 .galeria img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
-.galeria img.ancha { aspect-ratio: 3 / 2; }
+.galeria img.ancha { grid-column: span 2; aspect-ratio: 3 / 2; }
+.galeria img.ancha-m { grid-column: span 2; aspect-ratio: 7 / 8; }
 @media (min-width: 900px) {
-  .galeria { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; height: min(1650px, 115vw); }
-  .galeria__col { gap: 1.25rem; }
-  .galeria__col:nth-child(3) { display: grid; margin-top: -8%; }
+  /* compu: cuatro columnas que se mueven a distinta velocidad */
+  .galeria {
+    grid-template-columns: repeat(4, 1fr); grid-auto-flow: row; gap: 1.1rem;
+    height: min(1700px, 118vw); overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 90%, transparent 100%);
+            mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 90%, transparent 100%);
+  }
+  .galeria__col { display: grid; gap: 1.1rem; align-content: start; will-change: transform; }
+  .galeria__col:nth-child(2) { margin-top: -14%; }
+  .galeria__col:nth-child(3) { margin-top: -4%; }
+  .galeria__col:nth-child(4) { margin-top: -20%; }
+  .galeria img.ancha { grid-column: auto; }
+  .galeria img.ancha-m { grid-column: auto; aspect-ratio: 2 / 3; }
 }
 
 /* ───────── Contacto ───────── */
@@ -733,23 +740,29 @@ a { color: inherit; }
     </div>
 
     <div class="galeria" id="galeria">
-      <div class="galeria__col" data-velocidad="-0.12">
-        <img src="media/noche-bartender.jpg" alt="Bartender de Mixo sirviendo con niebla bajo el cartel Ice Cream Cocktails" loading="lazy">
-        <img src="media/ritual-fuego.jpg" alt="Bartender flameando un helado en la barra" loading="lazy">
-        <img src="media/noche-soplete.jpg" alt="Ahumado del Old Fashioned con soplete en la barra" loading="lazy">
-        <img src="media/evento-martini.jpg" alt="Invitada con una copa de Mixo" loading="lazy">
-      </div>
-      <div class="galeria__col" data-velocidad="0.1">
+      <div class="galeria__col" data-velocidad="-0.1">
+        <img src="media/noche-bartender.jpg" alt="Bartender de Mixo volcando la niebla bajo el cartel Ice Cream Cocktails" loading="lazy">
         <img class="ancha" src="media/noche-niebla.jpg" alt="Copa con niebla sobre la barra de madera" loading="lazy">
+        <img src="media/noche-soplete.jpg" alt="Ahumado del Old Fashioned con soplete en la barra" loading="lazy">
+        <img src="media/ritual-fuego.jpg" alt="Bartender flameando un helado en la barra" loading="lazy">
+      </div>
+      <div class="galeria__col" data-velocidad="0.08">
+        <img class="ancha-m" src="media/noche-risas.jpg" alt="Invitada riendo en la barra mientras el bartender prepara un trago con niebla" loading="lazy">
+        <img src="media/noche-naranja.jpg" alt="Ralladura de naranja sobre el Chocolate Old Fashioned" loading="lazy">
         <img src="media/barra.jpg" alt="La barra de Mixo" loading="lazy">
-        <img src="media/noche-cartel.jpg" alt="Cartel iluminado Ice Cream Cocktails sobre la barra" loading="lazy">
         <img src="media/ritual-merengue.jpg" alt="Merengue flameado sobre el Lemon Pie Gimlet" loading="lazy">
+      </div>
+      <div class="galeria__col" data-velocidad="-0.05">
+        <img src="media/noche-cartel.jpg" alt="Cartel iluminado Ice Cream Cocktails sobre la barra" loading="lazy">
+        <img src="media/dia-barra-jardin.jpg" alt="La barra de Mixo en un evento al aire libre, con invitados" loading="lazy">
+        <img src="media/ritual-spray.jpg" alt="Ritual de aromatizado sobre un vaso" loading="lazy">
         <img src="media/evento-old-fashioned.jpg" alt="Invitado con un Old Fashioned de Mixo" loading="lazy">
       </div>
-      <div class="galeria__col" data-velocidad="-0.06">
-        <img src="media/ritual-manos.jpg" alt="Manos del bartender preparando un trago" loading="lazy">
-        <img src="media/ritual-spray.jpg" alt="Ritual de aromatizado sobre un vaso" loading="lazy">
+      <div class="galeria__col" data-velocidad="0.1">
         <img src="media/estante.jpg" alt="Estante de la barra con el cartel Ice Cream Cocktails" loading="lazy">
+        <img src="media/dia-soplete.jpg" alt="Ahumado con soplete en un evento de día" loading="lazy">
+        <img src="media/evento-martini.jpg" alt="Invitada con una copa de Mixo" loading="lazy">
+        <img src="media/ritual-manos.jpg" alt="Manos del bartender preparando un trago" loading="lazy">
       </div>
     </div>
   </section>
@@ -953,6 +966,7 @@ a { color: inherit; }
       img.style.transform = 'translate3d(0,' + (-8 + t * 8) + '%,0)';
     });
     columnas.forEach(function (c) {
+      if (vw < 900) { c.style.transform = ''; return; }
       var b = c.parentNode.getBoundingClientRect();
       if (b.bottom < -200 || b.top > vh + 200) return;
       c.style.transform = 'translate3d(0,' + ((b.top - vh / 2) * parseFloat(c.dataset.velocidad)) + 'px,0)';

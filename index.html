@@ -420,7 +420,7 @@ a { color: inherit; }
   display: grid; grid-template-columns: 1fr 1fr; grid-auto-flow: dense; gap: .6rem;
 }
 .galeria__col { display: contents; }
-.galeria img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
+.galeria img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; order: var(--m, 0); } /* en el celular el orden se define foto por foto */
 .galeria img.ancha { grid-column: span 2; aspect-ratio: 3 / 2; }
 .galeria img.ancha-m { grid-column: span 2; aspect-ratio: 7 / 8; }
 @media (min-width: 900px) {
@@ -432,6 +432,7 @@ a { color: inherit; }
             mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 90%, transparent 100%);
   }
   .galeria__col { display: grid; gap: 1.1rem; align-content: start; will-change: transform; }
+  .galeria img { order: 0; }
   .galeria__col:nth-child(2) { margin-top: -14%; }
   .galeria__col:nth-child(3) { margin-top: -4%; }
   .galeria__col:nth-child(4) { margin-top: -20%; }
@@ -741,30 +742,30 @@ a { color: inherit; }
 
     <div class="galeria" id="galeria">
       <div class="galeria__col" data-velocidad="-0.1">
-        <img src="media/noche-bartender.jpg" alt="Bartender de Mixo volcando la niebla bajo el cartel Ice Cream Cocktails" loading="lazy">
-        <img src="media/ritual-fuego.jpg" alt="Bartender flameando un helado en la barra" loading="lazy">
-        <img class="ancha" src="media/noche-niebla.jpg" alt="Copa con niebla sobre la barra de madera" loading="lazy">
-        <img src="media/dia-barra-jardin.jpg" alt="La barra de Mixo en un evento al aire libre, con invitados" loading="lazy">
-        <img src="media/barra.jpg" alt="La barra de Mixo" loading="lazy">
+        <img style="--m:1" src="media/noche-bartender.jpg" alt="Bartender de Mixo volcando la niebla bajo el cartel Ice Cream Cocktails" loading="lazy">
+        <img style="--m:2" src="media/ritual-fuego.jpg" alt="Bartender flameando un helado en la barra" loading="lazy">
+        <img class="ancha" style="--m:3" src="media/noche-niebla.jpg" alt="Copa con niebla sobre la barra de madera" loading="lazy">
+        <img style="--m:18" src="media/dia-barra-jardin.jpg" alt="La barra de Mixo en un evento al aire libre, con invitados" loading="lazy">
+        <img style="--m:17" src="media/barra.jpg" alt="La barra de Mixo" loading="lazy">
       </div>
       <div class="galeria__col" data-velocidad="0.08">
-        <img src="media/noche-naranja.jpg" alt="Ralladura de naranja sobre el Chocolate Old Fashioned" loading="lazy">
-        <img class="ancha-m" src="media/noche-risas.jpg" alt="Invitada riendo en la barra mientras el bartender prepara un trago con niebla" loading="lazy">
-        <img src="media/ritual-merengue.jpg" alt="Merengue flameado sobre el Lemon Pie Gimlet" loading="lazy">
-        <img src="media/noche-soplete.jpg" alt="Ahumado del Old Fashioned con soplete en la barra" loading="lazy">
+        <img style="--m:9" src="media/noche-naranja.jpg" alt="Ralladura de naranja sobre el Chocolate Old Fashioned" loading="lazy">
+        <img class="ancha-m" style="--m:8" src="media/noche-risas.jpg" alt="Invitada riendo en la barra mientras el bartender prepara un trago con niebla" loading="lazy">
+        <img style="--m:5" src="media/ritual-merengue.jpg" alt="Merengue flameado sobre el Lemon Pie Gimlet" loading="lazy">
+        <img style="--m:6" src="media/noche-soplete.jpg" alt="Ahumado del Old Fashioned con soplete en la barra" loading="lazy">
       </div>
       <div class="galeria__col" data-velocidad="-0.05">
-        <img src="media/evento-martini.jpg" alt="Invitada con una copa de Mixo" loading="lazy">
-        <img src="media/noche-cartel.jpg" alt="Cartel iluminado Ice Cream Cocktails sobre la barra" loading="lazy">
-        <img src="media/evento-old-fashioned.jpg" alt="Invitado con un Old Fashioned de Mixo" loading="lazy">
-        <img src="media/noche-celular.jpg" alt="Invitado filmando con el celular el ritual de niebla en la barra" loading="lazy">
+        <img style="--m:7" src="media/evento-martini.jpg" alt="Invitada con una copa de Mixo" loading="lazy">
+        <img style="--m:11" src="media/noche-cartel.jpg" alt="Cartel iluminado Ice Cream Cocktails sobre la barra" loading="lazy">
+        <img style="--m:10" src="media/evento-old-fashioned.jpg" alt="Invitado con un Old Fashioned de Mixo" loading="lazy">
+        <img style="--m:15" src="media/noche-celular.jpg" alt="Invitado filmando con el celular el ritual de niebla en la barra" loading="lazy">
       </div>
       <div class="galeria__col" data-velocidad="0.1">
-        <img src="media/ritual-spray.jpg" alt="Ritual de aromatizado sobre un vaso" loading="lazy">
-        <img src="media/noche-llama.jpg" alt="Llama del soplete sobre dos vasos de Old Fashioned" loading="lazy">
-        <img src="media/ritual-manos.jpg" alt="Manos del bartender preparando un trago" loading="lazy">
-        <img src="media/noche-miel.jpg" alt="Bartender de Mixo preparando un trago bajo el cartel Ice Cream Cocktails" loading="lazy">
-        <img src="media/dia-soplete.jpg" alt="Ahumado con soplete en un evento de día" loading="lazy">
+        <img style="--m:12" src="media/ritual-spray.jpg" alt="Ritual de aromatizado sobre un vaso" loading="lazy">
+        <img style="--m:13" src="media/noche-llama.jpg" alt="Llama del soplete sobre dos vasos de Old Fashioned" loading="lazy">
+        <img style="--m:14" src="media/ritual-manos.jpg" alt="Manos del bartender preparando un trago" loading="lazy">
+        <img style="--m:4" src="media/noche-miel.jpg" alt="Bartender de Mixo preparando un trago bajo el cartel Ice Cream Cocktails" loading="lazy">
+        <img style="--m:16" src="media/dia-soplete.jpg" alt="Ahumado con soplete en un evento de día" loading="lazy">
       </div>
     </div>
     </div>
